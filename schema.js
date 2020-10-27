@@ -23,6 +23,68 @@ const PokemonType = new GraphQLObjectType({
     types: { type: GraphQLList(TypesType) },
     abilities: { type: GraphQLList(AbilitiesType) },
     moves: { type: GraphQLList(MovesType) },
+    forms: { type: GraphQLList(GenericType) },
+    gameIndices: { type: GraphQLList(GameIndexType),
+      resolve: obj => obj.game_indices},
+    sprites: { type: SpritesType },
+  })
+})
+
+const GenericType = new GraphQLObjectType({
+  name: 'Generic',
+  description: "",
+
+  fields: () => ({
+    name: { type: GraphQLString,
+      resolve: parent => parent.name },
+    url: { type: GraphQLString,
+      resolve: parent => parent.url }
+  })
+})
+
+const GameIndexType = new GraphQLObjectType({
+  name: 'GameIndex',
+  description: "List of Games this pokemon appears in",
+
+  fields: () => ({
+    gameIndex: { type: GraphQLString,
+      resolve: obj => obj.game_index },
+      name: { type: GraphQLString,
+        resolve: parent => parent.version.name
+      },
+      url: { type: GraphQLString,
+        resolve: parent => parent.version.url
+      }
+  })
+})
+
+const SpritesType = new GraphQLObjectType({
+  name: 'Sprites',
+  description: "Sprite images for the pokemon",
+
+  fields: () => ({
+    backDefault: { type: GraphQLString,
+      resolve: obj => obj.back_default },
+    backFemale: { type: GraphQLString,
+      resolve: obj => obj.back_female },
+    backShiny: { type: GraphQLString,
+      resolve: obj => obj.back_shiny },
+    backShinyFemale: { type: GraphQLString,
+      resolve: obj => obj.back_shiny_female },
+    frontDefault: { type: GraphQLString,
+      resolve: obj => obj.front_default },
+    frontFemale: { type: GraphQLString,
+      resolve: obj => obj.front_female },
+    frontShiny: { type: GraphQLString,
+      resolve: obj => obj.front_shiny },
+    frontShinyFemale: { type: GraphQLString,
+      resolve: obj => obj.front_shiny_female },
+    otherDreamWorld: { type: GraphQLString,
+      resolve: obj => obj.other.dream_world.front_default },
+    otherDreamWorldFemale: { type: GraphQLString,
+      resolve: obj => obj.other.dream_world.front_female },
+    otherOfficialArtwork: { type: GraphQLString,
+      resolve: obj => obj.other["official-artwork"].front_default },
   })
 })
 
@@ -31,6 +93,7 @@ const TypesType = new GraphQLObjectType({
   description: "List of the pokemon's types.",
 
   fields: () => ({
+    slot: { type: GraphQLString },
     name: { type: GraphQLString,
       resolve: parent => parent.type.name
     },

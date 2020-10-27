@@ -20,6 +20,51 @@ const PokemonType = new GraphQLObjectType({
   fields: () => ({
     name: { type: GraphQLString },
     id: { type: GraphQLString },
+    types: { type: GraphQLList(TypesType) },
+    abilities: { type: GraphQLList(AbilitiesType) },
+    moves: { type: GraphQLList(MovesType) },
+  })
+})
+
+const TypesType = new GraphQLObjectType({
+  name: 'Types',
+  description: "List of the pokemon's types.",
+
+  fields: () => ({
+    name: { type: GraphQLString,
+      resolve: parent => parent.type.name
+    },
+    url: { type: GraphQLString,
+      resolve: parent => parent.type.url
+    }
+  })
+})
+
+const AbilitiesType = new GraphQLObjectType({
+  name: 'Abilities',
+  description: "List of the pokemon's abilities.",
+
+  fields: () => ({
+    name: { type: GraphQLString,
+      resolve: parent => parent.ability.name
+    },
+    url: { type: GraphQLString,
+      resolve: parent => parent.ability.url
+    }
+  })
+})
+
+const MovesType = new GraphQLObjectType({
+  name: 'Moves',
+  description: "List of the pokemon's moves.",
+
+  fields: () => ({
+    name: { type: GraphQLString,
+      resolve: parent => parent.move.name
+    },
+    url: { type: GraphQLString,
+      resolve: parent => parent.move.url
+    }
   })
 })
 
